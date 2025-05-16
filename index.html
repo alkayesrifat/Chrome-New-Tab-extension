@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Wallpapers Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+            font-family: 'Times New Roman', serif;
+            border-bottom: 2px solid #bdc3c7;
+        }
+        
+        .slider-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+        
+        .slide {
+            min-width: 100vw;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .slide-caption {
+            position: absolute;
+            bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 18px;
+            z-index: 10;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        #prevBtn {
+            left: 20px;
+        }
+        
+        #nextBtn {
+            right: 20px;
+        }
+        
+        .dots-container {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dot.active {
+            background-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-btn {
+                padding: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .slide-caption {
+                font-size: 12px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Islamic Wallpapers Gallery</h1>
+    
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <!-- Slides will be inserted here by JavaScript -->
+        </div>
+        
+        <button class="nav-btn" id="prevBtn">&#10094;</button>
+        <button class="nav-btn" id="nextBtn">&#10095;</button>
+        
+        <div class="dots-container" id="dotsContainer">
+            <!-- Dots will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // List of all images
+        const images = [
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/abrar%20quotes.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/akhirat%202.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/akhirat%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/akhirat%203.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/akhirat.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20amar%20provu.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20amar%20rob.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20enough%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20enough%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20enough%204.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20enough.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20near.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20watching%20me%2001.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allah%20is%20watching%20me%2002.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allahoke%20deke.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/allahor%20ronge.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/anger.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%201.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%204.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%205.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%206.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/astagfirullah%207.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/didare%20ilahi.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/dushchinta.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/fitna%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/fitnahin.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/gonaher%20sadh.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/gunaher%20shad.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/hiadayer%20alo.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/jahannam%20pc-01.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/jannate.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/kata%20tar.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/kon%20niyamot%20ossikar%20korbe.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mrittu%201.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mrittu%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mrittu%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mrittu%204.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mrittu%204.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/mumin%201.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/nijeder%20vule.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/niras%20koren%20ni.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/niyamat%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/niyamat%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/obaddhota.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/rab%20somporke%20dhoka%20(2.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/rab%20somporke%20dhoka.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%203.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20banagla%204.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%201.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%205.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%206.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%207.jpeg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/ramadan%20bangla%208.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/salam%2001.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/salam%2002.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/salat%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/salat%202.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/salat.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/sofolkam.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/sofolota.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/somoy%20pc-01.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/straight%20path%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/straight%20path%204.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/straight%20path%205.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/straight%20path.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/sura%20fazr%20last.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/tawba%201.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/tawba%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/tawba%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/tawba%206.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/time%201.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/time%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/time%203.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/turn%20to%20allah.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/vulen%20na.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/zikr.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আমাদের%20সরল%20পথ%20দেখাও.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আমি%20যদি%20আজ%20এখন%20মারা%20যাই__.png",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আল্লাহ%20দেখছেন%20১.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আল্লাহ%20দেখছেন%20২.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আল্লাহ%20দেখছেন%20৩.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/আল্লাহ%20যার%20অভিভাবক.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/কষ্টের%20সাথেই%20রয়েছে%20স্বস্তি(1.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/কষ্টের%20সাথেই%20রয়েছে%20স্বস্তি.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/জাহান্নাম%20১.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/পথ%20হারা%20২.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/পথহারা_.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/প্রতিটি%20প্রাণী%20মৃত্যুর%20স্বাদ%20গ্রহণ%20করবে%201.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/প্রতিটি%20প্রাণী%20মৃত্যুর%20স্বাদ%20গ্রহণ%20করবে%202.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/রবের%20অবাধ্যতায়%20মৃত্যু.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/সালাত%20ও%20ধৈর্য্য%20১.jpg",
+            "https://raw.githubusercontent.com/alkayesrifat/Chrome-New-Tab-extension/main/Islamic-wallpaper-For-Pc/সালাত%20ও%20ধৈর্য্য%20২.jpg"
+        ];
+
+        // Get DOM elements
+        const slider = document.getElementById('slider');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('dotsContainer');
+
+        let currentSlide = 0;
+
+        // Create slides and dots
+        function createSlides() {
+            images.forEach((image, index) => {
+                // Create slide
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                
+                const img = document.createElement('img');
+                img.src = image;
+                img.alt = `Islamic Wallpaper ${index + 1}`;
+                
+                const caption = document.createElement('div');
+                caption.className = 'slide-caption';
+                caption.textContent = `Image ${index + 1} of ${images.length}`;
+                
+                slide.appendChild(img);
+                slide.appendChild(caption);
+                slider.appendChild(slide);
+                
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        // Initialize slider
+        function initSlider() {
+            createSlides();
+            updateSlider();
+        }
+
+        // Go to specific slide
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlider();
+        }
+
+        // Update slider position and active dot
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            
+            // Update dots
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // Next slide
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % images.length;
+            updateSlider();
+        }
+
+        // Previous slide
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + images.length) % images.length;
+            updateSlider();
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Touch events for mobile swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide(); // Swipe left
+            } else if (touchEndX > touchStartX + 50) {
+                prevSlide(); // Swipe right
+            }
+        }
+
+        // Auto slide (optional)
+        // setInterval(nextSlide, 5000);
+
+        // Initialize the slider
+        initSlider();
+    </script>
+</body>
+</html>
