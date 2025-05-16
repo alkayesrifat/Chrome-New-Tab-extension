@@ -1,3 +1,42 @@
+# Islamic Wallpaper Tab Extension
+
+A Chrome Extension that replaces your default new tab with a beautiful Islamic wallpaper to inspire and remind you of your faith every time you open a new tab.
+
+## Features
+
+- Displays a calming Islamic-themed wallpaper
+- Simple, clean interface
+- Lightweight and easy to use
+- Offline functionality with cached assets
+
+## Installation
+
+Follow these steps to install the extension manually:
+
+1. **Download the Extension Files**
+   - Clone this repository or download the ZIP file and extract it to a known location.
+
+2. **Open Chrome Extensions Page**
+   - Go to `chrome://extensions/` in your Chrome browser.
+
+3. **Enable Developer Mode**
+   - Toggle the **Developer mode** switch in the top-right corner.
+
+4. **Load Unpacked Extension**
+   - Click on **"Load unpacked"**.
+   - Select the folder where you extracted the extension files.
+
+5. The extension should now be installed and active.
+
+That’s it! Enjoy a peaceful and inspiring browsing experience.
+
+## Note
+
+This extension is not hosted on the Chrome Web Store. You need to manually install it as described above.
+
+---
+
+
 # Islamic Wallpapers
 
 Below are all the Islamic wallpapers included in this repository:
