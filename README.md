@@ -1,3 +1,7 @@
+## 🔽 Download
+
+[Download  (v1.0)](https://github.com/alkayesrifat/Chrome-New-Tab-extension/releases/download/v1.0/Chrome-New-Tab-extension.zip)
+
 # Islamic Wallpaper Tab Extension
 
 A Chrome Extension that replaces your default new tab with a beautiful Islamic wallpaper to inspire and remind you of your faith every time you open a new tab.
